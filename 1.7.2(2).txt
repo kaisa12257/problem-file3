@@ -1,0 +1,59 @@
+# Function: hex_to_int
+# Input:  RDI - pointer to null-terminated hexadecimal string
+# Output: RAX - integer result
+
+.section .text
+.global hex_to_int
+
+hex_to_int:
+    xor     rax, rax          # Clear result (RAX)
+    
+.loop:
+    movzb   rcx, byte ptr [rdi]   # Load next character (zero-extend)
+    cmp     rcx, 0            # Check for null terminator
+    je      .done             # End of string
+
+    shl     rax, 4            # Multiply result by 16 (hex shift left)
+
+    # Convert ASCII to value
+    cmp     rcx, '0'
+    jl      .invalid          # Invalid character
+    cmp     rcx, '9'
+    jle     .is_digit
+
+    cmp     rcx, 'A'
+    jl      .check_lower
+    cmp     rcx, 'F'
+    jle     .is_upper
+
+.check_lower:
+    cmp     rcx, 'a'
+    jl      .invalid
+    cmp     rcx, 'f'
+    jle     .is_lower
+    jmp     .invalid
+
+.is_digit:
+    sub     rcx, '0'
+    jmp     .add_value
+
+.is_upper:
+    sub     rcx, 'A'
+    add     rcx, 10
+    jmp     .add_value
+
+.is_lower:
+    sub     rcx, 'a'
+    add     rcx, 10
+    jmp     .add_value
+
+.add_value:
+    add     rax, rcx          # Add current digit value
+    inc     rdi               # Move to next character
+    jmp     .loop
+
+.invalid:
+    xor     rax, rax          # If invalid, return 0
+.done:
+    ret
+

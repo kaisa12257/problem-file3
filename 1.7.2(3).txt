@@ -1,0 +1,35 @@
+; int_to_binary(int n)
+; 입력: eax = 정수
+; 출력: 메모리에 이진 문자열 저장 (esi 가 가리키는 곳)
+
+section .data
+    bin_buffer db 33 dup(0)   ; 최대 32비트 + NULL
+
+section .text
+global int_to_binary
+int_to_binary:
+    push ebx
+    push ecx
+    push edx
+
+    mov ecx, 32         ; 32번 반복
+    mov edi, bin_buffer
+
+.loop:
+    shl eax, 1          ; 왼쪽으로 1비트 이동 (MSB -> CF)
+    jc  .one
+    mov byte [edi], '0'
+    jmp .next
+.one:
+    mov byte [edi], '1'
+.next:
+    inc edi
+    loop .loop
+
+    mov byte [edi], 0   ; NULL 종료
+
+    pop edx
+    pop ecx
+    pop ebx
+    mov eax, bin_buffer
+    ret

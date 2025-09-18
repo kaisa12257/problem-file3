@@ -1,0 +1,32 @@
+; int_to_hex(int n)
+; eax = 정수 입력, 반환값: esi = 16진수 문자열 주소
+
+section .data
+    hex_chars db "0123456789ABCDEF"
+    hex_buffer db 9 dup(0)
+
+section .text
+global int_to_hex
+int_to_hex:
+    push ebx
+    push ecx
+    push edx
+
+    mov edi, hex_buffer + 8
+    mov byte [edi], 0
+    mov ecx, 8
+
+.loop:
+    mov ebx, eax
+    and ebx, 0Fh
+    mov dl, [hex_chars + ebx]
+    dec edi
+    mov [edi], dl
+    shr eax, 4
+    loop .loop
+
+    mov eax, edi
+    pop edx
+    pop ecx
+    pop ebx
+    ret

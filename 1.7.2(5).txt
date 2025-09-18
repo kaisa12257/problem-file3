@@ -1,0 +1,16 @@
+; add_base_b(num1, num2, base)
+; num1, num2 = 문자열 주소, base = eax
+; 결과 문자열 result 에 저장
+
+section .bss
+    result resb 1002
+
+section .text
+global add_base_b
+add_base_b:
+    ; 여기서는 로직만 개략: 
+    ; 1) num1, num2 길이 측정
+    ; 2) 뒤에서부터 한자리씩 더하고 carry 처리
+    ; 3) 결과를 result에 문자열로 저장
+    ; 실제 구현은 길이 비교 및 루프 처리 필요
+    ret

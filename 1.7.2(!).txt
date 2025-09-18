@@ -1,0 +1,28 @@
+# Function: binary_to_int
+# Input: RDI - pointer to null-terminated binary string (max 16 characters)
+# Output: RAX - integer value
+
+.section .text
+.global binary_to_int
+
+binary_to_int:
+    xor     rax, rax          # Clear RAX to store the result (accumulator)
+    
+.loop:
+    movzb   rcx, byte ptr [rdi]   # Load next byte from string into RCX (zero-extend)
+    cmp     rcx, 0            # Check for null terminator
+    je      .done             # If end of string, finish
+
+    shl     rax, 1            # Multiply result by 2 (shift left)
+
+    cmp     rcx, '1'          # Is the character '1'?
+    jne     .next_char        # If not, skip adding 1
+
+    add     rax, 1            # Add 1 to result if current bit is '1'
+
+.next_char:
+    inc     rdi               # Move to next character in string
+    jmp     .loop             # Repeat loop
+
+.done:
+    ret

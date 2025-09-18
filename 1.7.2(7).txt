@@ -1,0 +1,9 @@
+; multiply_hex(digit, hex_str)
+; digit = eax (0~15)
+; hex_str = 문자열 주소
+; 결과 문자열 result 에 저장
+
+; 절차:
+; - 뒤에서부터 hex_str의 각 자리 × digit
+; - carry 포함
+; - 결과 문자열 저장
